@@ -1,0 +1,21 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+vote-server
+vote
+
+# Test binary, build with `go test -c`
+*.test
+*.log
+
+*.out
+/vendor/*
+!/vendor/vendor.json
+*.yaml
+!.config.yaml
+
+.idea
+.idea/*
