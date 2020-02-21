@@ -12,6 +12,10 @@ Gin 을 이용한 웹서버 구현
 ### 2. Build
 ```
 go build -o vote ./server/
+
+or
+
+make vote
 ```
 ### 3. Run
 ```
