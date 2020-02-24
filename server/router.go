@@ -5,14 +5,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yuneejang/webserver/rpc"
 )
 
 func SetupRouter(router *gin.Engine) *gin.Engine {
 
 	//Setp. HTML rendering
 	//Using LoadHTMLGlob() or LoadHTMLFiles()
-	router.LoadHTMLGlob("templates/*.html")
-	router = setRouterDefault(router)
+	//router.LoadHTMLGlob("templates/*.html")
+	//router = setRouterDefault(router)
 
 	//wild card :page를 사용하면서 /v1도 그곳에 포함.. 라우터 그룹하려니 아래와같은 문제가 생김..
 	//panic: 'v1' in new path '/v1/login' conflicts with existing wildcard ':page' in exist
@@ -23,6 +24,18 @@ func SetupRouter(router *gin.Engine) *gin.Engine {
 
 	// v2 := router.Group("/v2")
 	// setRouterV2(v2)
+
+	////////////////////////////////////////////
+	//Json Test
+	router = setRouterJSON(router)
+
+	return router
+}
+
+func setRouterJSON(router *gin.Engine) *gin.Engine {
+	// Using GET, POST, PUT, PATCH, DELETE and OPTIONS
+	router.GET("/", rpc.RequestJSON)
+	//router.GET("/", rpc.ParseRequest())
 	return router
 }
 
