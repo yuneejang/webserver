@@ -12,8 +12,8 @@ func SetupRouter(router *gin.Engine) *gin.Engine {
 
 	//Setp. HTML rendering
 	//Using LoadHTMLGlob() or LoadHTMLFiles()
-	//router.LoadHTMLGlob("templates/*.html")
-	//router = setRouterDefault(router)
+	router.LoadHTMLGlob("../../templates/*.html") //경로 지정 다시!!!
+	router = setRouterDefault(router)
 
 	//wild card :page를 사용하면서 /v1도 그곳에 포함.. 라우터 그룹하려니 아래와같은 문제가 생김..
 	//panic: 'v1' in new path '/v1/login' conflicts with existing wildcard ':page' in exist
@@ -27,7 +27,7 @@ func SetupRouter(router *gin.Engine) *gin.Engine {
 
 	////////////////////////////////////////////
 	//Json Test
-	router = setRouterJSON(router)
+	//router = setRouterJSON(router)
 
 	return router
 }

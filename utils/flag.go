@@ -1,15 +1,16 @@
-package main
+package utils
 
 import (
 	"fmt"
 
+	"github.com/yuneejang/webserver/config"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
 //cmd
 var (
 	//TODO: To setup database, make init cmd
-	initCommand = cli.Command{
+	InitCommand = cli.Command{
 		Action: MigrateFlags(initServer),
 		Name:   "init",
 		Usage:  "Initialize a new Server",
@@ -74,4 +75,21 @@ func MigrateFlags(action func(ctx *cli.Context) error) func(*cli.Context) error 
 		}
 		return action(ctx)
 	}
+}
+
+func MakeConfig(ctx *cli.Context) (cfg *config.Config, err error) {
+
+	if ctx.GlobalIsSet(ConfigFilePath.Name) {
+		//yaml config를 load 합니다.
+		path := ctx.GlobalString(ConfigFilePath.Name)
+		//logger.Info("custom config file path", ":", path)
+		cfg, err = config.LoadConfigFile(path)
+		if err != nil {
+			//	logger.Info("ERROR", ":", err)
+			return nil, err
+		}
+	} else {
+		cfg = &config.DefaultConfig
+	}
+	return cfg, nil
 }

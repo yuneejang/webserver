@@ -6,8 +6,8 @@ import (
 	"sort"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/yuneejang/webserver/types"
+	"github.com/yuneejang/webserver/config"
+	"github.com/yuneejang/webserver/utils"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -19,20 +19,20 @@ func main() {
 	app.Name = "Web Server Test"
 	app.Usage = "See README"
 	app.Commands = []cli.Command{
-		initCommand,
+		utils.InitCommand,
 	}
 	sort.Sort(cli.CommandsByName(app.Commands))
 
 	app.Flags = []cli.Flag{
-		ConfigFilePath,
+		utils.ConfigFilePath,
 		//	DevelopFlag,
-		LogFlag,
-		LogPathFlag,
-		EnableAPI,
+		utils.LogFlag,
+		utils.LogPathFlag,
+		utils.EnableAPI,
 	}
 	app.Before = func(ctx *cli.Context) error {
 		//
-		cfg, err := makeConfig(ctx)
+		cfg, err := utils.MakeConfig(ctx)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -75,25 +75,9 @@ func run(ctx *cli.Context) {
 	// }
 	// s.ListenAndServe()
 }
-func makeConfig(ctx *cli.Context) (cfg *types.Config, err error) {
 
-	if ctx.GlobalIsSet(ConfigFilePath.Name) {
-		//yaml config를 load 합니다.
-		path := ctx.GlobalString(ConfigFilePath.Name)
-		//logger.Info("custom config file path", ":", path)
-		cfg, err = types.LoadConfigFile(path)
-		if err != nil {
-			//	logger.Info("ERROR", ":", err)
-			return nil, err
-		}
-	} else {
-		cfg = &types.DefaultConfig
-	}
-	return cfg, nil
-}
-
-func setConfig(ctx *cli.Context, conf *types.Config) {
+func setConfig(ctx *cli.Context, conf *config.Config) {
 	info := conf.Nodes[0]
-	types.HttpAttach = "http://" + info.Host + ":" + info.HttpPort
+	config.HttpAttach = "http://" + info.Host + ":" + info.HttpPort
 
 }
